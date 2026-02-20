@@ -1,8 +1,6 @@
 #imports listed below
 #requirement of text (look up to generate after installing libraries *create it after you finish*)
 import requests
-import json
-
 #geocoding endpoint that converts city name to lattitude/longitude 
 def get_coordinates(city, country): 
 
@@ -84,12 +82,15 @@ class WeatherReport:
             f"Observation Time: {self.observation_time}"
         )
     
+#setting variables 
 city = "Chicago"
 country = "US"
 
+#Qcalling methods
 coords = get_coordinates(city, country)
 weather = get_weather(coords["latitude"], coords["longitude"]) 
 
+#print out structure 
 report = WeatherReport( 
     coords["city"], 
     coords["country"],
