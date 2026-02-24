@@ -1,6 +1,11 @@
 #imports listed below
 #requirement of text (look up to generate after installing libraries *create it after you finish*)
 import requests
+# testing flask implementation from week 7  
+from flask import Flask
+
+app = Flask(__name__)
+
 #geocoding endpoint that converts city name to lattitude/longitude 
 def get_coordinates(city, country): 
 
@@ -59,6 +64,8 @@ def get_weather(latitude, longitude):
         "observation_time": current["time"] 
     }
 
+
+
 class WeatherReport: 
     def __init__(self, city, country, latitude, longitude, temperature, elevation, windspeed, observation_time): 
         self.city = city
@@ -69,7 +76,7 @@ class WeatherReport:
         self.elevation = elevation 
         self.windspeed = windspeed
         self.observation_time = observation_time
-    
+
     def __str__(self): 
         return (
             f"Weather Report\n"
@@ -81,7 +88,8 @@ class WeatherReport:
             f"Wind Speed: {self.windspeed}km/h\n"
             f"Observation Time: {self.observation_time}"
         )
-    
+
+   
 #setting variables 
 city = "Chicago"
 country = "US"
@@ -90,7 +98,8 @@ country = "US"
 coords = get_coordinates(city, country)
 weather = get_weather(coords["latitude"], coords["longitude"]) 
 
-#print out structure 
+#print out structure
+
 report = WeatherReport( 
     coords["city"], 
     coords["country"],
@@ -102,6 +111,10 @@ report = WeatherReport(
     weather["observation_time"]
 )
 
+@app.route('/')
+def results(): 
+    return str(report)
+ 
 print(report)
 #test case ONE
 # print(get_coordinates("San Diego", "US"))
@@ -110,3 +123,7 @@ print(report)
 # weather_data = get_weather(32.72, -117.16)
 
 # print(json.dumps(weather_data, indent=4))
+
+#FLASK implementation 
+if __name__ == '__main__': 
+    app.run(debug=True)
