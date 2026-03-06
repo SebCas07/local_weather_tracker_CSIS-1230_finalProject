@@ -3,8 +3,12 @@
 import requests
 # testing flask implementation from week 7  
 from flask import Flask
-app = Flask(__name__)
+#import to connect routes to main.py
+from routes import weather_bp
 
+app = Flask(__name__)
+#connecting 
+app.register_blueprint(weather_bp)
 
 #geocoding endpoint that converts city name to lattitude/longitude 
 def get_coordinates(city, country): 
@@ -134,32 +138,32 @@ print(report)
 
 
 #FLASK IMPLEMENTATION (post) 
-@app.route('/')
-def home():
-    return "Welcome to Weather Tracker"
+# @app.route('/')
+# def home():
+#     return "Welcome to Weather Tracker"
 
-@app.route('/weather', methods = ['POST'])
-def create_weather(): 
-    return "Create a new weather report"
+# @app.route('/weather', methods = ['POST'])
+# def create_weather(): 
+#     return "Create a new weather report"
 
-#FLASK IMPLEMENTATION (post) 
-@app.route('/weather', methods=['GET'])
-def get_all_weather(): 
-    return "Get all weather reports"
+# #FLASK IMPLEMENTATION (post) 
+# @app.route('/weather', methods=['GET'])
+# def get_all_weather(): 
+#     return "Get all weather reports"
 
-@app.route('/weather/<int:id>', methods = ['GET'])
-def get_weather_by_id(id):
-    return f"Get weather report {id}"
+# @app.route('/weather/<int:id>', methods = ['GET'])
+# def get_weather_by_id(id):
+#     return f"Get weather report {id}"
 
-@app.route('/weather/<int:id>', methods = ['PUT'])
-def update_weather(id): 
-    return f"Update weather report {id}"
+# @app.route('/weather/<int:id>', methods = ['PUT'])
+# def update_weather(id): 
+#     return f"Update weather report {id}"
 
-@app.route('/weather/<int:id>', methods = ['DELETE'] )
-def delete_weather(id): 
-    return f"Delete weather report {id}"
+# @app.route('/weather/<int:id>', methods = ['DELETE'] )
+# def delete_weather(id): 
+#     return f"Delete weather report {id}"
 
 
-#FLASK implementation 
+#specified port = 8080 because for some reason port 5000 which was my default was being blocked and did not allow me to run the servers 
 if __name__ == '__main__': 
     app.run(debug=True, port=8080)

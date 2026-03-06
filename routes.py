@@ -1,6 +1,11 @@
 from flask import Flask
+#this import is to connect routes to main.py
+from flask import blueprints
 
 app = Flask (__name__)
+
+#variable to import into main.py
+weather_bp = blueprints('weather', __name__)
 
 @app.route('/')
 def home():
