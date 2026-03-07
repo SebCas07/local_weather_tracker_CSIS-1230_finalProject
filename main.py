@@ -1,13 +1,10 @@
 #imports listed below
-#requirement of text (look up to generate after installing libraries *create it after you finish*)
 import requests
-# testing flask implementation from week 7  
 from flask import Flask
 #import to connect routes to main.py
 from routes import weather_bp
 
 app = Flask(__name__)
-#connecting 
 app.register_blueprint(weather_bp)
 
 #geocoding endpoint that converts city name to lattitude/longitude 
@@ -55,8 +52,7 @@ def get_weather(latitude, longitude):
     response = requests.get(URL_Two, params=params) 
     data = response.json()
 
-    #test for test case 2 
-    # return data
+ 
     current = data["current_weather"]
     
     #switch between current and data in some lines because of the json structure
@@ -115,54 +111,8 @@ report = WeatherReport(
     weather["observation_time"]
 )
 
-#FLASK IMPLEMENTATION (post) 
-# @app.route('/')
-# def home(): 
-#     return "Welcome to the Weather Tracker"
-
-# #FLASK IMPLEMENTATION (post) 
-# @app.route('/results', methods=['POST'])
-# def results(): 
-#     return None
-#     # return str(report)
-
 #to visualize 
 print(report)
-#test case ONE
-# print(get_coordinates("San Diego", "US"))
-#test case TWO (looking at json structurre to ensure return call works)
-
-# weather_data = get_weather(32.72, -117.16)
-
-# print(json.dumps(weather_data, indent=4))
-
-
-#FLASK IMPLEMENTATION (post) 
-# @app.route('/')
-# def home():
-#     return "Welcome to Weather Tracker"
-
-# @app.route('/weather', methods = ['POST'])
-# def create_weather(): 
-#     return "Create a new weather report"
-
-# #FLASK IMPLEMENTATION (post) 
-# @app.route('/weather', methods=['GET'])
-# def get_all_weather(): 
-#     return "Get all weather reports"
-
-# @app.route('/weather/<int:id>', methods = ['GET'])
-# def get_weather_by_id(id):
-#     return f"Get weather report {id}"
-
-# @app.route('/weather/<int:id>', methods = ['PUT'])
-# def update_weather(id): 
-#     return f"Update weather report {id}"
-
-# @app.route('/weather/<int:id>', methods = ['DELETE'] )
-# def delete_weather(id): 
-#     return f"Delete weather report {id}"
-
 
 #specified port = 8080 because for some reason port 5000 which was my default was being blocked and did not allow me to run the servers 
 if __name__ == '__main__': 
