@@ -1,10 +1,6 @@
 #imports listed below
 #requirement of text (look up to generate after installing libraries *create it after you finish*)
 import requests
-# testing flask implementation from week 7  
-from flask import Flask
-app = Flask(__name__)
-
 
 #geocoding endpoint that converts city name to lattitude/longitude 
 def get_coordinates(city, country): 
@@ -111,28 +107,5 @@ report = WeatherReport(
     weather["observation_time"]
 )
 
-#FLASK IMPLEMENTATION (post) 
-# @app.route('/')
-# def home(): 
-#     return "Welcome to the Weather Tracker"
-
-# #FLASK IMPLEMENTATION (post) 
-# @app.route('/results', methods=['POST'])
-# def results(): 
-#     return None
-#     # return str(report)
-
 #to visualize 
 print(report)
-#test case ONE
-# print(get_coordinates("San Diego", "US"))
-#test case TWO (looking at json structurre to ensure return call works)
-
-# weather_data = get_weather(32.72, -117.16)
-
-# print(json.dumps(weather_data, indent=4))
-
-import routes
-#FLASK implementation 
-if __name__ == '__main__': 
-    app.run(debug=True)
