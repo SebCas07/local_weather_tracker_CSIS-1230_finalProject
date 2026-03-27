@@ -2,8 +2,8 @@ import psycopg2
 
 def save_to_db (report): 
     conn = psycopg2.connect(
-        dbName = "weatherTracker_DB_CSIS-1230",
-        user = "=",
+        dbname = "weatherTracker_DB_CSIS-1230",
+        user = "postgres",
         password = "Ti@ncas07",
         host = "localhost", 
         port = "5432"
@@ -11,8 +11,9 @@ def save_to_db (report):
 
     cur = conn.cursor()
 
-    cur.execute(""" INSERT INTO observations (city, country, latitude, longitude, temperature, elvation, windspeed, observation_time) 
-                VALUES(%s, %s, %s, %s, %s, %s, %s , %s)""", 
+    cur.execute(""" INSERT INTO observations (city, country, latitude, longitude, temperature, elevation, windspeed, observation_time) 
+                VALUES(%s, %s, %s, %s, %s, %s, %s , %s) 
+                ON CONFLICT (city) DO NOTHING""",
                 (
                  report.city, 
                  report.country,
