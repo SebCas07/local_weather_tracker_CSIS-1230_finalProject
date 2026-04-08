@@ -6,7 +6,7 @@ import psycopg2
 app = Flask (__name__)
 
 #variable to import into main.py
-weather_bp = Blueprint('weather', __name__)
+weather_bp = Blueprint('weather', __name__, template_folder='templates')
 
 def get_db_connection(): 
     conn = psycopg2.connect(
@@ -36,6 +36,11 @@ def get_all_weather():
     cur.close()
     conn.close()
 
+    # debugging 
+    print("NUMBER OF ROWS:", len(rows))
+    print("ROWS:", rows )
+    #End of debugging 
+
     weather_list = []
     for row in rows: 
         weather_list.append({
@@ -49,6 +54,9 @@ def get_all_weather():
             "windspeed": row[7], 
             "observation_time": row[8]
         })
+    #debugging 
+    print("WEATHER LIST:", weather_list)
+    #end of debugging
 
     return render_template('weather.html', weather_list = weather_list)
 
@@ -64,7 +72,7 @@ def get_weather_by_id(id):
     if row is None: 
         return jsonify({"error": "Record not found"}), 404
     
-    return jsonify({ 
+    weather = { 
         "id": row[0], 
         "city": row[1], 
         "country": row[2], 
@@ -74,7 +82,9 @@ def get_weather_by_id(id):
         "elevation": row[6], 
         "windspeed": row[7], 
         "observation_time": row[8]
-    })
+    }
+
+    return render_template ('weather_detail.html', weather=weather)
 
 @weather_bp.route('/weather/<int:id>', methods = ['PUT'])
 def update_weather(id): 
