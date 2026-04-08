@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 #this import is to connect routes to main.py
 from flask import Blueprint
 import psycopg2
@@ -50,7 +50,7 @@ def get_all_weather():
             "observation_time": row[8]
         })
 
-    return jsonify(weather_list)
+    return render_template('weather.html', weather_list = weather_list)
 
 @weather_bp.route('/weather/<int:id>', methods = ['GET'])
 def get_weather_by_id(id):
