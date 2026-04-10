@@ -3,8 +3,6 @@ from flask import jsonify, render_template
 from flask import Blueprint
 import psycopg2
 
-# app = Flask (__name__)
-
 #variable to import into main.py
 weather_bp = Blueprint('weather', __name__, template_folder='templates')
 
@@ -17,11 +15,6 @@ def get_db_connection():
         port = "5432"
     )
     return conn
-
-# debug route 
-# @app.route('/test')
-# def test(): 
-#     return render_template('weather.html', weather_list=[{"id": 1, "city": "Test City", "country": "US", "temperature": 25, "elevation": 100, "windspeed": 10, "observation_time": "2026-01-01"}])    
 
 @weather_bp.route('/')
 def home():
