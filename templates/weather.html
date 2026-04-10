@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Tracker</title>
+</head>
+<body>
+    <h1> Weather Observations</h1>
+    <table border = "1">
+        <tr>
+            <th>ID</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Temperature</th>
+            <th>Elevation</th>
+            <th>Wind Speed</th>
+            <th>Observation Time</th>
+        </tr>
+        {% for w in weather_list %}
+        <tr>
+            <td>{{ w.id }}</td>
+            <td><a href = "/weather/{{ w.id }}">{{ w.city}}</a></td>
+            <td>{{w.country}}</td>
+            <td>{{w.latitude}}</td>
+            <td>{{w.longitude}}</td>
+            <td>{{w.temperature}}</td>
+            <td>{{w.elevation}}</td>
+            <td>{{w.windspeed}}</td>
+            <td>{{w.observation_time}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,13 +1,48 @@
 #imports listed below
 import requests
-from flask import Flask
+# import psycopg2
+import os
+from flask import Flask, render_template
 #import to connect routes to main.py
 from routes import weather_bp
 from weatherTrackerDB import save_to_db
+print(os.path.abspath('templates'))
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 app.register_blueprint(weather_bp)
 
+#debugging 
+
+# @app.route('/weather')
+# def get_all_weather():
+#     conn = psycopg2.connect(
+#         dbname="weatherTracker_DB_CSIS-1230",
+#         user="postgres",
+#         password="Ti@ncas07",
+#         host="localhost",
+#         port="5432"
+#     )
+#     cur = conn.cursor()
+#     cur.execute("SELECT * FROM observations")
+#     rows = cur.fetchall()
+#     cur.close()
+#     conn.close()
+
+#     weather_list = []
+#     for row in rows:
+#         weather_list.append({
+#             "id": row[0],
+#             "city": row[1],
+#             "country": row[2],
+#             "latitude": row[3],
+#             "longitude": row[4],
+#             "temperature": row[5],
+#             "elevation": row[6],
+#             "windspeed": row[7],
+#             "observation_time": row[8]
+#         })
+
+#     return render_template('weather.html', weather_list=weather_list)
 #geocoding endpoint that converts city name to lattitude/longitude 
 def get_coordinates(city, country): 
 
@@ -125,6 +160,7 @@ for entry in cities:
     #to visualize 
     print(report)
     save_to_db(report)
+
 
 #specified port = 8080 because for some reason port 5000 which was my default was being blocked and did not allow me to run the servers 
 if __name__ == '__main__': 

@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, render_template
+from flask import jsonify, render_template
 #this import is to connect routes to main.py
 from flask import Blueprint
 import psycopg2
 
-app = Flask (__name__)
+# app = Flask (__name__)
 
 #variable to import into main.py
 weather_bp = Blueprint('weather', __name__, template_folder='templates')
@@ -17,6 +17,11 @@ def get_db_connection():
         port = "5432"
     )
     return conn
+
+# debug route 
+# @app.route('/test')
+# def test(): 
+#     return render_template('weather.html', weather_list=[{"id": 1, "city": "Test City", "country": "US", "temperature": 25, "elevation": 100, "windspeed": 10, "observation_time": "2026-01-01"}])    
 
 @weather_bp.route('/')
 def home():
@@ -36,11 +41,6 @@ def get_all_weather():
     cur.close()
     conn.close()
 
-    # debugging 
-    print("NUMBER OF ROWS:", len(rows))
-    print("ROWS:", rows )
-    #End of debugging 
-
     weather_list = []
     for row in rows: 
         weather_list.append({
@@ -54,9 +54,6 @@ def get_all_weather():
             "windspeed": row[7], 
             "observation_time": row[8]
         })
-    #debugging 
-    print("WEATHER LIST:", weather_list)
-    #end of debugging
 
     return render_template('weather.html', weather_list = weather_list)
 
