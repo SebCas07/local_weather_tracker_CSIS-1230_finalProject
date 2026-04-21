@@ -2,17 +2,21 @@ from flask import jsonify, render_template
 #this import is to connect routes to main.py
 from flask import Blueprint
 import psycopg2
+import os 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #variable to import into main.py
 weather_bp = Blueprint('weather', __name__, template_folder='templates')
 
 def get_db_connection(): 
     conn = psycopg2.connect(
-        dbname = "weatherTracker_DB_CSIS-1230", 
-        user = "postgres", 
-        password = "Ti@ncas07", 
-        host = "localhost", 
-        port = "5432"
+        dbname = os.getenv('DB_NAME'), 
+        user = os.getenv('DB_USER'), 
+        password = os.getenv('DB_PASSWORD'), 
+        host = os.getenv('DB_HOST'), 
+        port = os.getenv('DB_PORT')
     )
     return conn
 
