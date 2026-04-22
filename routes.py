@@ -102,7 +102,7 @@ def edit_weather(id):
     weather_response = requests.get('https://api.open-meteo.com/v1/forecast', params={ 
         "latitude": latitude,
         "longitude": longitude,
-        "current weather": True
+        "current_weather": True
     })
 
     weather_data = weather_response.json()
@@ -124,14 +124,14 @@ def edit_weather(id):
     cur.close()
     conn.close()
 
-    return redirect(url_for('weather.get_weather'))
+    return redirect(url_for('weather.get_all_weather'))
 
 #FLASK IMPLEMENTATION (post) 
 @weather_bp.route('/weather', methods=['GET'])
 def get_all_weather(): 
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM observations")
+    cur.execute("SELECT * FROM observations ORDER BY ID")
     rows = cur.fetchall()
     cur.close()
     conn.close()
