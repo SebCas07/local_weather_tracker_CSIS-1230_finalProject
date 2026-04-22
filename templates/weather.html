@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1> Weather Observations</h1>
+    <a href="/weather/add"><button>Add City</button></a>
     <table border = "1">
         <tr>
             <th>ID</th>
@@ -18,6 +19,7 @@
             <th>Elevation</th>
             <th>Wind Speed</th>
             <th>Observation Time</th>
+            <th>Actions</th>
         </tr>
         {% for w in weather_list %}
         <tr>
@@ -29,9 +31,13 @@
             <td>{{w.temperature}}</td>
             <td>{{w.elevation}}</td>
             <td>{{w.windspeed}}</td>
-            <td>{{w.observation_time}}</td>
+            <td>{{w.observation_time}}</td> 
+            <td><a href="/weather/{{w.id}}/edit"><button>Edit</button></a></td>
+
         </tr>
         {% endfor %}
     </table>
+
+
 </body>
 </html>

@@ -1,9 +1,10 @@
-from flask import jsonify, render_template
+from flask import jsonify, render_template, request, redirect, url_for
 #this import is to connect routes to main.py
 from flask import Blueprint
 import psycopg2
 import os 
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 
@@ -24,9 +25,106 @@ def get_db_connection():
 def home():
     return "Welcome to Weather Tracker"
 
+@weather_bp.route('/weather/add', methods = ['GET'])
+def add_weather_form(): 
+    return render_template('add_weather.html')
+
 @weather_bp.route('/weather', methods = ['POST'])
 def create_weather(): 
-    return "Create a new weather report"
+    city = request.form.get('city')
+    country = request.form.get('country')
+
+    #call the geocoding API
+    geo_response=requests.get('https://geocoding-api.open-meteo.com/v1/search', params = {
+        "name": city, 
+        "country": country, 
+        "count": 1 
+    })
+    geo_data=geo_response.json()
+
+    if "results" not in geo_data: 
+        return "City not found", 404
+    
+    result = geo_data["results"][0]
+    latitude = result["latitude"]
+    longitude = result["longitude"]
+    city_name = result["name"]
+    country_name = result["country"]
+
+    #call the weather API
+    weather_response = requests.get('https://api.open-meteo.com/v1/forecast', params={ 
+        "latitude": latitude, 
+        "longitude": longitude, 
+        "current_weather" : True
+    })
+
+    weather_data = weather_response.json()
+    current = weather_data["current_weather"]
+
+    # insert into DB
+    conn = get_db_connection()
+    cur=conn.cursor()
+    cur.execute("""
+                INSERT INTO observations (city, country, latitude, longitude, temperature, elevation, windspeed, observation_time)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (city) DO NOTHING """, (
+                    city_name, 
+                    country_name, 
+                    latitude, 
+                    longitude, 
+                    current['temperature'], 
+                    weather_data['elevation'], 
+                    current['windspeed'], 
+                    current['time']
+                ))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for('weather.get_all_weather'))
+
+@weather_bp.route('/weather/<int:id>/edit', methods=['GET'])
+def edit_weather(id): 
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # fetches the fresh weather data from the API using existing coords
+    cur.execute("SELECT * FROM observations WHERE id = %s", (id,))
+    row = cur.fetchone()
+
+    if row is None: 
+        return "Record not found", 404
+    
+    latitude = row[3]
+    longitude = row[4]
+
+    # recall the weather API
+    weather_response = requests.get('https://api.open-meteo.com/v1/forecast', params={ 
+        "latitude": latitude,
+        "longitude": longitude,
+        "current weather": True
+    })
+
+    weather_data = weather_response.json()
+    current = weather_data["current_weather"] 
+
+    # updating the reocrd 
+    cur.execute("""
+                UPDATE observations 
+                SET temperature = %s, elevation = %s, windspeed = %s, observation_time = %s
+                WHERE id = %s""", 
+                (current["temperature"], 
+                 weather_data["elevation"], 
+                 current["windspeed"], 
+                 current["time"], 
+                 id 
+                 ))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for('weather.get_weather'))
 
 #FLASK IMPLEMENTATION (post) 
 @weather_bp.route('/weather', methods=['GET'])
