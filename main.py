@@ -93,39 +93,39 @@ class WeatherReport:
 
    
 #setting variables 
-cities = [ 
-    {"city": "Chicago", "country": "US"}, 
-    {"city": "New York", "country": "US"}, 
-    {"city": "London", "country": "GB"}, 
-    {"city": "Tokyo", "country": "JP"}, 
-    {"city": "Paris", "country": "FR"}, 
-    {"city": "Sydney", "country": "AU"}, 
-    {"city": "Dubai", "country": "AE"}, 
-    {"city": "Toronto", "country": "CA"}, 
-    {"city": "Cairo", "country": "EG"}, 
-    {"city": "Buenos Aires", "country": "AR"}
-]
+# cities = [ 
+#     {"city": "Chicago", "country": "US"}, 
+#     {"city": "New York", "country": "US"}, 
+#     {"city": "London", "country": "GB"}, 
+#     {"city": "Tokyo", "country": "JP"}, 
+#     {"city": "Paris", "country": "FR"}, 
+#     {"city": "Sydney", "country": "AU"}, 
+#     {"city": "Dubai", "country": "AE"}, 
+#     {"city": "Toronto", "country": "CA"}, 
+#     {"city": "Cairo", "country": "EG"}, 
+#     {"city": "Buenos Aires", "country": "AR"}
+# ]
 #Qcalling methods
-for entry in cities: 
-    coords = get_coordinates(entry["city"], entry["country"])
-    weather = get_weather(coords["latitude"], coords["longitude"]) 
+# for entry in cities: 
+#     coords = get_coordinates(entry["city"], entry["country"])
+#     weather = get_weather(coords["latitude"], coords["longitude"]) 
 
-    #print out structure
+    # #print out structure
 
-    report = WeatherReport( 
-        coords["city"], 
-        coords["country"],
-        coords["latitude"],
-        coords["longitude"], 
-        weather["temperature"],
-        weather["elevation"], 
-        weather["windspeed"], 
-        weather["observation_time"]
-    )
+    # report = WeatherReport( 
+    #     coords["city"], 
+    #     coords["country"],
+    #     coords["latitude"],
+    #     coords["longitude"], 
+    #     weather["temperature"],
+    #     weather["elevation"], 
+    #     weather["windspeed"], 
+    #     weather["observation_time"]
+    # )
 
-    #to visualize 
-    print(report)
-    save_to_db(report)
+    # #to visualize 
+    # print(report)
+    # save_to_db(report)
 
 
 #specified port = 8080 because for some reason port 5000 which was my default was being blocked and did not allow me to run the servers 

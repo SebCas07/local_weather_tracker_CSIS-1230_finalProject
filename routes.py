@@ -23,7 +23,7 @@ def get_db_connection():
 
 @weather_bp.route('/')
 def home():
-    return "Welcome to Weather Tracker"
+    return render_template('home_weather.html')
 
 @weather_bp.route('/weather/add', methods = ['GET'])
 def add_weather_form(): 
