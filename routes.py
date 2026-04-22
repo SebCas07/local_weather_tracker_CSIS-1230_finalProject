@@ -126,6 +126,17 @@ def edit_weather(id):
 
     return redirect(url_for('weather.get_all_weather'))
 
+@weather_bp.route('/weather/<int:id>/delete', methods=['POST'])
+def delete_weather(id): 
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM observations WHERE id = %s", (id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    
+    return redirect(url_for('weather.get_all_weather'))
+
 #FLASK IMPLEMENTATION (post) 
 @weather_bp.route('/weather', methods=['GET'])
 def get_all_weather(): 
@@ -178,10 +189,10 @@ def get_weather_by_id(id):
 
     return render_template ('weather_detail.html', weather=weather)
 
-@weather_bp.route('/weather/<int:id>', methods = ['PUT'])
-def update_weather(id): 
-    return f"Update weather report {id}"
+# @weather_bp.route('/weather/<int:id>', methods = ['PUT'])
+# def update_weather(id): 
+#     return f"Update weather report {id}"
 
-@weather_bp.route('/weather/<int:id>', methods = ['DELETE'] )
-def delete_weather(id): 
-    return f"Delete weather report {id}"
+# @weather_bp.route('/weather/<int:id>', methods = ['DELETE'] )
+# def delete_weather(id): 
+#     return f"Delete weather report {id}"
