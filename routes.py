@@ -95,36 +95,19 @@ def edit_weather(id):
     if row is None: 
         return "Record not found", 404
     
-    latitude = row[3]
-    longitude = row[4]
+    weather = { 
+        "id": row[0], 
+        "city": row[1], 
+        "country": row[2],
+        "latitude": row[3], 
+        "longitude": row[4], 
+        "temperature": row[5], 
+        "elevation": row[6], 
+        "windspeed": row[7], 
+        "observation_time": row[8]
+    }
 
-    # recall the weather API
-    weather_response = requests.get('https://api.open-meteo.com/v1/forecast', params={ 
-        "latitude": latitude,
-        "longitude": longitude,
-        "current_weather": True
-    })
-
-    weather_data = weather_response.json()
-    current = weather_data["current_weather"] 
-
-    # updating the reocrd 
-    cur.execute("""
-                UPDATE observations 
-                SET temperature = %s, elevation = %s, windspeed = %s, observation_time = %s
-                WHERE id = %s""", 
-                (current["temperature"], 
-                 weather_data["elevation"], 
-                 current["windspeed"], 
-                 current["time"], 
-                 id 
-                 ))
-    
-    conn.commit()
-    cur.close()
-    conn.close()
-
-    return redirect(url_for('weather.get_all_weather'))
+    return render_template('edit_weather.html', weather = weather)
 
 @weather_bp.route('/weather/<int:id>/delete', methods=['POST'])
 def delete_weather(id): 
@@ -189,9 +172,33 @@ def get_weather_by_id(id):
 
     return render_template ('weather_detail.html', weather=weather)
 
-# @weather_bp.route('/weather/<int:id>', methods = ['PUT'])
-# def update_weather(id): 
-#     return f"Update weather report {id}"
+@weather_bp.route('/weather/<int:id>/edit', methods = ['POST'])
+def update_weather(id): 
+    city = request.form.get('city')
+    country = request.form.get('country')
+    latitude = request.form.get('latitude')
+    longitude = request.form.get('longitude')
+    temperature = request.form.get('temperature')
+    elevation = request.form.get('elevation')
+    windspeed = request.form.get('windspeed')
+    observation_time = request.form.get('observation_time')
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+                UPDATE observations
+                SET city = %s, country=%s, latitude = %s, longitude = %s, 
+                temperature = %s, elevation = %s, windspeed = %s, observation_time = %s
+                WHERE id = %s
+                """, (
+                    city, country, latitude, longitude, temperature, elevation, windspeed, observation_time, id 
+                ))
+    
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return redirect(url_for('weather.get_all_weather'))
 
 # @weather_bp.route('/weather/<int:id>', methods = ['DELETE'] )
 # def delete_weather(id): 

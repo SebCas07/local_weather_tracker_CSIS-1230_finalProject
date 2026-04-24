@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Weather Record</title>
+</head>
+<body>
+    <h1>Edit Weather Record</h1>
+    <form action="/weather/{{weather.id}}/edit" method="POST">
+        <label>City:</label><br>
+        <input type="text" name="city" value="{{weather.city}}" required><br><br>
+
+        <label>Country:</label><br>
+        <input type="text" name="country" value="{{weather.country}}" required><br><br>
+
+        <label>Latitude:</label><br>
+        <input type="text" name="latitude" value="{{weather.latitude}}" required><br><br>
+
+        <label>Longitude:</label><br>
+        <input type="text" name="longitude" value="{{weather.longitude}}" required><br><br>
+
+        <label>Temperature (celsius):</label><br>
+        <input type="text" name="temperature" value="{{weather.temperature}}" required><br><br>
+
+        <label>Elevation (meters):</label><br>
+        <input type="text" name="elevation" value="{{weather.elevation}}" required><br><br>
+
+        <label>Windspeed (km/h):</label><br>
+        <input type="text" name="windspeed" value="{{weather.windspeed}}" required><br><br>
+
+        <label>Observation Time:</label><br>
+        <input type="text" name="observation_time" value="{{weather.observation_time}}" required><br><br>
+
+        <button type="submit">Save Changes</button>
+        <a href="/weather"><button type="button">Cancel</button></a>
+
+    </form>
+</body>
+</html>
