@@ -120,7 +120,6 @@ def delete_weather(id):
     
     return redirect(url_for('weather.get_all_weather'))
 
-#FLASK IMPLEMENTATION (post) 
 @weather_bp.route('/weather', methods=['GET'])
 def get_all_weather(): 
     conn = get_db_connection()
@@ -199,7 +198,3 @@ def update_weather(id):
     conn.close()
 
     return redirect(url_for('weather.get_all_weather'))
-
-# @weather_bp.route('/weather/<int:id>', methods = ['DELETE'] )
-# def delete_weather(id): 
-#     return f"Delete weather report {id}"

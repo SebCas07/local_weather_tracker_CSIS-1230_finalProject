@@ -58,7 +58,6 @@ def get_weather(latitude, longitude):
     current = data["current_weather"]
     
     #switch between current and data in some lines because of the json structure
-    #look at test case 2 
     return{ 
         "temperature": current["temperature"],
         "elevation": data["elevation"], 
@@ -90,42 +89,6 @@ class WeatherReport:
             f"Wind Speed: {self.windspeed}km/h\n"
             f"Observation Time: {self.observation_time}"
         )
-
-   
-#setting variables 
-# cities = [ 
-#     {"city": "Chicago", "country": "US"}, 
-#     {"city": "New York", "country": "US"}, 
-#     {"city": "London", "country": "GB"}, 
-#     {"city": "Tokyo", "country": "JP"}, 
-#     {"city": "Paris", "country": "FR"}, 
-#     {"city": "Sydney", "country": "AU"}, 
-#     {"city": "Dubai", "country": "AE"}, 
-#     {"city": "Toronto", "country": "CA"}, 
-#     {"city": "Cairo", "country": "EG"}, 
-#     {"city": "Buenos Aires", "country": "AR"}
-# ]
-#Qcalling methods
-# for entry in cities: 
-#     coords = get_coordinates(entry["city"], entry["country"])
-#     weather = get_weather(coords["latitude"], coords["longitude"]) 
-
-    # #print out structure
-
-    # report = WeatherReport( 
-    #     coords["city"], 
-    #     coords["country"],
-    #     coords["latitude"],
-    #     coords["longitude"], 
-    #     weather["temperature"],
-    #     weather["elevation"], 
-    #     weather["windspeed"], 
-    #     weather["observation_time"]
-    # )
-
-    # #to visualize 
-    # print(report)
-    # save_to_db(report)
 
 
 #specified port = 8080 because for some reason port 5000 which was my default was being blocked and did not allow me to run the servers 
